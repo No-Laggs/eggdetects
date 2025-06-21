@@ -79,7 +79,7 @@ perc.BackgroundTransparency = 1
 perc.TextColor3 = Color3.fromRGB(255, 255, 255)
 perc.Font = Enum.Font.GothamSemibold
 perc.TextScaled = true
-perc.Text = "🔢 0% Complete"
+perc.Text = "0% Complete"
 
 -- Info Label
 local i = Instance.new("TextLabel", f)
@@ -101,14 +101,14 @@ credit.TextColor3 = Color3.fromRGB(170, 170, 170)
 credit.TextScaled = true
 credit.Text = "👨‍💻📜 Script made by @growyourowngarden on TikTok"
 
--- Progress Function (Fast then Slow with pause at 50%)
+-- Progress Function (pause at 50% & 60% for 1 min, 80% for 2 mins)
 local function fillProgress()
 	a = true
 	bar.Size = UDim2.new(0, 0, 1, 0)
-	perc.Text = "🔢 0% Complete"
+	perc.Text = "0% Complete"
 
 	for i = 1, 100 do
-		perc.Text = "🔢 " .. i .. "% Complete"
+		perc.Text = i .. "% Complete"
 		bar:TweenSize(UDim2.new(i / 100, 0, 1, 0), "Out", "Linear", 0.05, true)
 
 		if i == 2 then
@@ -118,11 +118,15 @@ local function fillProgress()
 		end
 
 		if i == 50 then
-			wait(1)
+			wait(60) -- 1 minute pause
+		elseif i == 60 then
+			wait(60) -- 1 minute pause
+		elseif i == 80 then
+			wait(120) -- 2 minute pause
 		elseif i < 50 then
-			wait(0.01)
+			wait(0.01) -- fast before 50
 		else
-			wait(0.05)
+			wait(0.05) -- slow after
 		end
 	end
 
